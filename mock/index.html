@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Milkemist デザインモック</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=M+PLUS+Rounded+1c:wght@400;500;700&family=Quicksand:wght@500;600;700&family=Zen+Old+Mincho:wght@600;700;900&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Cinzel:wght@600;700&family=Yomogi&display=swap" rel="stylesheet">
+<style>
+/* ===== トークン ===== */
+:root {
+  --milk: #FFFDF9;
+  --paper: #F7F4EC;
+  --amber: #D4A359;
+  --amber-l: #F0C05A;
+  --peach: #F7C5CC;
+  --rose: #E88D9D;
+  --grass: #7BA279;
+  --grass-l: #DAF0E1;
+  --lagoon: #8ED6CC;
+  --lagoon-d: #3FB0AB;
+  --sea: #22607A;
+  --ink: #2E3B3B;
+  --ink-soft: #66746F;
+
+  /* 書体 案1：やわらか */
+  --f-ja-head: 'Zen Maru Gothic', sans-serif;
+  --f-en-head: 'Quicksand', sans-serif;
+  --f-en-label: 'Quicksand', sans-serif;
+  --en-style: normal;
+  --en-weight: 700;
+  --f-body: 'M PLUS Rounded 1c', 'Zen Maru Gothic', sans-serif;
+  --f-hand: 'Yomogi', cursive;
+
+  --mask: var(--mask-egg);
+  --radius: 26px;
+}
+/* 書体 案2：クラシック */
+body.type-classic {
+  --f-ja-head: 'Zen Old Mincho', serif;
+  --f-en-head: 'Cormorant Garamond', serif;
+  --f-en-label: 'Cinzel', serif;
+  --en-style: italic;
+  --en-weight: 600;
+}
+body.shape-diamond { --mask: var(--mask-diamond); }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--f-body);
+  line-height: 1.9;
+  letter-spacing: .03em;
+  background-color: var(--paper);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .28 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  overflow-x: hidden;
+}
+img, svg { display: block; max-width: 100%; }
+a { color: var(--sea); }
+button { font: inherit; color: inherit; }
+.svg-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* ===== 共通パーツ ===== */
+.label {
+  margin: 0 0 .6rem;
+  font-family: var(--f-en-label);
+  font-weight: 700;
+  font-size: .78rem;
+  letter-spacing: .28em;
+  color: var(--lagoon-d);
+  text-transform: uppercase;
+}
+.label span { color: var(--ink-soft); letter-spacing: .12em; }
+.h-en {
+  display: block;
+  font-family: var(--f-en-head);
+  font-style: var(--en-style);
+  font-weight: var(--en-weight);
+  letter-spacing: .04em;
+  line-height: 1;
+}
+.h-ja {
+  display: block;
+  font-family: var(--f-ja-head);
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+.shape {
+  -webkit-mask: var(--mask) center / 100% 100% no-repeat;
+          mask: var(--mask) center / 100% 100% no-repeat;
+}
+.wash {
+  position: absolute;
+  border-radius: 50%;
+  filter: url(#wc-soft);
+  pointer-events: none;
+  z-index: 0;
+}
+.deco {
+  position: absolute;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+.btn {
+  display: inline-flex; align-items: center; gap: .5em;
+  padding: .85em 1.6em;
+  border-radius: 999px;
+  border: 0;
+  background: var(--sea);
+  color: var(--milk);
+  font-family: var(--f-ja-head);
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .2s, background .2s, opacity .2s;
+}
+.btn:hover { transform: translateY(-2px); background: #1b5068; }
+.btn:disabled { opacity: .35; cursor: not-allowed; transform: none; }
+.btn-ghost { background: transparent; color: var(--sea); box-shadow: inset 0 0 0 1.5px var(--sea); }
+.btn-ghost:hover { background: rgba(34,96,122,.08); }
+.ph-note {
+  font-family: var(--f-hand);
+  color: var(--rose);
+  font-size: .9rem;
+  line-height: 1.5;
+}
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .9s ease, transform .9s ease; }
+.reveal.is-in { opacity: 1; transform: none; }
+
+/* ===== ヘッダー ===== */
+.site-header {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: .8rem clamp(16px, 4vw, 48px);
+  background: rgba(247,244,236,.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.brand { display: flex; align-items: baseline; gap: .7rem; text-decoration: none; color: var(--ink); }
+.brand-en { font-family: var(--f-en-head); font-style: var(--en-style); font-weight: var(--en-weight); font-size: 1.45rem; letter-spacing: .04em; }
+.brand-mock { font-size: .7rem; color: var(--rose); border: 1px dashed var(--rose); border-radius: 999px; padding: .05em .7em; letter-spacing: .08em; }
+.site-nav ul { display: flex; gap: clamp(1rem, 2.4vw, 2rem); list-style: none; margin: 0; padding: 0; }
+.site-nav a { text-decoration: none; color: var(--ink); font-family: var(--f-ja-head); font-weight: 700; font-size: .92rem; display: grid; text-align: center; line-height: 1.3; }
+.site-nav a small { font-family: var(--f-en-label); font-size: .6rem; letter-spacing: .2em; color: var(--lagoon-d); }
+.site-nav a:hover { color: var(--sea); }
+
+/* ===== 表紙 ===== */
+.cover {
+  position: relative;
+  padding: clamp(24px, 4vw, 56px) clamp(16px, 4vw, 48px) clamp(64px, 8vw, 120px);
+  overflow: hidden;
+  overflow: clip;
+}
+.cover-grid {
+  position: relative; z-index: 1;
+  max-width: 1240px; margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr);
+  gap: clamp(24px, 5vw, 80px);
+  align-items: center;
+}
+.cover-visual {
+  position: relative;
+  aspect-ratio: 5 / 6;
+  width: 100%;
+  max-height: 84vh;
+  margin-inline: auto;
+}
+.cover-frame {
+  position: absolute; left: 0; top: 0;
+  width: 86%; height: 100%;
+}
+.cover-frame svg, .photo-frame svg { width: 100%; height: 100%; }
+.cover-visual .deco-a { width: 46%; aspect-ratio: 5/6; right: -2%; top: -5%; background: var(--lagoon); opacity: .45; }
+.cover-visual .deco-b { width: 26%; aspect-ratio: 5/6; left: -6%; bottom: 4%; background: var(--amber-l); opacity: .35; }
+.cover-visual .deco-c { width: 14%; aspect-ratio: 5/6; right: 2%; bottom: -4%; background: var(--rose); opacity: .3; }
+
+.milke-ph {
+  position: absolute;
+  display: grid; place-content: center; justify-items: center; gap: .4rem;
+  text-align: center;
+  border: 2px dashed rgba(232,141,157,.75);
+  border-radius: 46% 46% 22px 22px / 26% 26% 22px 22px;
+  background: linear-gradient(180deg, rgba(255,253,249,.55), rgba(247,197,204,.55));
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  color: #b25d6d;
+  z-index: 2;
+}
+.milke-ph svg { width: 64px; height: 44px; }
+.milke-ph strong { font-family: var(--f-en-head); font-style: var(--en-style); font-size: 1.6rem; letter-spacing: .06em; line-height: 1; }
+.milke-ph .ph-note { color: #b25d6d; }
+.cover .milke-ph { right: 0; bottom: -3%; width: 44%; height: 88%; }
+
+.cover-text { position: relative; }
+.cover-title { margin: 0 0 1.4rem; }
+.cover-title .h-en { font-size: clamp(3.2rem, 7.4vw, 6.4rem); color: var(--sea); }
+.cover-title .h-ja { margin-top: .7rem; font-size: clamp(1rem, 1.6vw, 1.2rem); letter-spacing: .5em; color: var(--ink-soft); }
+.cover-catch {
+  margin: 0 0 .8rem;
+  font-family: var(--f-ja-head);
+  font-weight: 900;
+  font-size: clamp(1.7rem, 3.2vw, 2.6rem);
+  line-height: 1.45;
+  letter-spacing: .08em;
+}
+.cover-catch em { font-style: normal; background: linear-gradient(transparent 62%, rgba(240,192,90,.55) 62%); }
+.cover-sub { margin: 0 0 1.8rem; color: var(--ink-soft); font-family: var(--f-ja-head); letter-spacing: .14em; }
+.facts { list-style: none; padding: 0; margin: 0 0 2rem; display: grid; gap: .55rem; }
+.facts li { display: flex; align-items: center; gap: .7rem; font-size: .9rem; }
+.facts li::before {
+  content: ""; width: 14px; height: 17px; flex: none;
+  background: var(--lagoon-d); opacity: .8;
+  -webkit-mask: var(--mask) center / 100% 100% no-repeat; mask: var(--mask) center / 100% 100% no-repeat;
+}
+.cta { display: flex; flex-wrap: wrap; gap: .8rem; }
+.cover-pageno { position: absolute; right: clamp(16px, 4vw, 48px); bottom: 24px; font-family: var(--f-en-label); font-size: .72rem; letter-spacing: .3em; color: var(--ink-soft); z-index: 1; }
+
+/* ===== 巻頭特集 ===== */
+.feature {
+  position: relative;
+  padding: clamp(72px, 9vw, 140px) clamp(16px, 4vw, 48px);
+  background: linear-gradient(180deg, rgba(255,253,249,0) 0, rgba(255,253,249,.85) 120px);
+  overflow: hidden;
+  overflow: clip;
+}
+.wrap { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; }
+.feature-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(24px, 5vw, 72px);
+  align-items: end;
+  margin-bottom: clamp(40px, 6vw, 72px);
+}
+.feature-title { margin: 0; }
+.feature-title .h-en { font-size: clamp(3rem, 6.6vw, 5.6rem); color: var(--amber); }
+.feature-title .h-ja { margin-top: .9rem; font-size: clamp(1.3rem, 2.2vw, 1.75rem); }
+.feature-title .h-ja small { display: block; margin-top: .5rem; font-size: .68em; color: var(--ink-soft); letter-spacing: .12em; }
+.feature-lead { margin: 0; font-size: 1.02rem; color: var(--ink); border-left: 3px solid var(--amber-l); padding-left: 1.4rem; }
+
+.feature-body {
+  display: grid;
+  grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+}
+.feature-photo { position: relative; aspect-ratio: 5 / 6; position: sticky; top: 96px; }
+.photo-frame { position: absolute; inset: 0; }
+.feature-photo .deco-a { width: 40%; aspect-ratio: 5/6; left: -8%; top: -6%; background: var(--amber-l); opacity: .4; }
+.photo-caption {
+  position: absolute; left: 50%; bottom: 14%; transform: translateX(-50%);
+  background: rgba(255,253,249,.88); border-radius: 999px; padding: .3em 1.1em; white-space: nowrap;
+  z-index: 2;
+}
+
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.step {
+  background: var(--milk);
+  border-radius: var(--radius);
+  padding: 1.4rem 1.4rem 1.2rem;
+  box-shadow: 0 1px 0 rgba(46,59,59,.04), 0 14px 30px -18px rgba(34,96,122,.35);
+}
+.step-head { display: flex; align-items: center; gap: .8rem; margin-bottom: .5rem; }
+.step-no {
+  flex: none; width: 40px; height: 48px;
+  display: grid; place-items: center;
+  color: var(--milk); font-family: var(--f-en-head); font-weight: 700; font-size: 1.2rem;
+  background: var(--lagoon-d);
+  -webkit-mask: var(--mask) center / 100% 100% no-repeat; mask: var(--mask) center / 100% 100% no-repeat;
+}
+.step:nth-child(3) .step-no { background: var(--amber); }
+.step:nth-child(4) .step-no { background: var(--rose); }
+.step h3 { margin: 0; font-family: var(--f-ja-head); font-size: 1.12rem; letter-spacing: .08em; line-height: 1.4; }
+.step h3 small { font-size: .72rem; color: var(--ink-soft); font-weight: 500; }
+.step p { margin: 0 0 1rem; font-size: .9rem; color: var(--ink-soft); line-height: 1.8; }
+.formula { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
+.formula .ic { width: 38px; height: 46px; display: grid; place-items: center; background: var(--paper); border-radius: 50% 50% 50% 50% / 58% 58% 42% 42%; }
+.formula .ic svg { width: 30px; height: 30px; }
+.formula .op { color: var(--ink-soft); font-family: var(--f-en-head); font-size: 1.1rem; padding: 0 2px; }
+.formula .out { display: grid; justify-items: center; gap: 2px; margin-left: 4px; }
+.formula .out .ic { width: 50px; height: 60px; background: rgba(240,192,90,.18); }
+.formula .out .ic svg { width: 40px; height: 40px; }
+.formula .out span { font-size: .72rem; font-weight: 700; letter-spacing: .04em; }
+.formula .skill { display: grid; justify-items: center; font-size: .72rem; line-height: 1.4; text-align: center; }
+.formula .skill .ic { background: rgba(142,214,204,.25); }
+.formula .skill.warm .ic { background: rgba(240,192,90,.25); }
+
+/* ===== 体験デモ ===== */
+.demo {
+  margin-top: clamp(56px, 8vw, 96px);
+  background: var(--milk);
+  border-radius: 36px;
+  padding: clamp(24px, 4vw, 48px);
+  box-shadow: 0 30px 60px -40px rgba(34,96,122,.45);
+  position: relative;
+  overflow: hidden;
+  overflow: clip;
+}
+.demo-head { text-align: center; margin-bottom: 1.8rem; position: relative; z-index: 1; }
+.demo-head h3 { margin: 0 0 .3rem; font-family: var(--f-ja-head); font-size: clamp(1.3rem, 2.4vw, 1.7rem); letter-spacing: .1em; }
+.demo-head p { margin: 0; color: var(--ink-soft); font-size: .9rem; }
+.hands {
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(170px, .62fr) minmax(0, 1fr);
+  gap: clamp(12px, 2.4vw, 28px);
+  align-items: stretch;
+}
+.hand {
+  border-radius: 28px;
+  padding: 1.1rem 1rem 1.2rem;
+  background: rgba(247,244,236,.75);
+  box-shadow: inset 0 0 0 2px transparent;
+  cursor: pointer;
+  transition: box-shadow .25s, background .25s;
+  display: grid; gap: .9rem; justify-items: center;
+}
+.hand.is-active { background: rgba(142,214,204,.18); box-shadow: inset 0 0 0 2px var(--lagoon-d); }
+.hand-title { font-family: var(--f-ja-head); font-weight: 700; letter-spacing: .12em; display: flex; align-items: center; gap: .5rem; }
+.hand-title small { font-family: var(--f-en-label); font-size: .62rem; letter-spacing: .24em; color: var(--lagoon-d); }
+.hand-title .now { font-size: .66rem; background: var(--lagoon-d); color: var(--milk); border-radius: 999px; padding: 0 .6em; letter-spacing: .06em; visibility: hidden; }
+.hand.is-active .hand-title .now { visibility: visible; }
+.nails { display: flex; gap: 8px; align-items: flex-end; }
+.hand[data-hand="R"] .nails { flex-direction: row-reverse; }
+.nail {
+  position: relative;
+  width: 52px; height: 64px;
+  border: 0; padding: 0;
+  border-radius: 50% 50% 50% 50% / 58% 58% 42% 42%;
+  background: rgba(255,253,249,.95);
+  box-shadow: inset 0 0 0 2px rgba(102,116,111,.18), 0 6px 12px -8px rgba(34,96,122,.5);
+  display: grid; place-items: center;
+  cursor: pointer;
+  transition: transform .2s, box-shadow .3s;
+}
+.nail:nth-child(2), .nail:nth-child(3) { transform: translateY(-10px); }
+.nail:hover { box-shadow: inset 0 0 0 2px var(--lagoon-d), 0 6px 12px -8px rgba(34,96,122,.5); }
+.nail svg { width: 40px; height: 40px; }
+.nail .no { position: absolute; top: -18px; font-family: var(--f-en-head); font-size: .72rem; color: var(--ink-soft); }
+.nail.pop { animation: pop .35s ease; }
+.hand.frost .nail { box-shadow: inset 0 0 0 2px #9ED8F0, 0 0 16px rgba(158,216,240,.8); }
+.hand.warm .nail { box-shadow: inset 0 0 0 2px var(--amber-l), 0 0 16px rgba(240,192,90,.7); }
+.palm {
+  width: 108px; height: 128px;
+  display: grid; place-items: center; text-align: center;
+  border-radius: 50% 50% 50% 50% / 58% 58% 42% 42%;
+  background: radial-gradient(circle at 50% 40%, rgba(255,253,249,1), rgba(247,244,236,.9));
+  box-shadow: inset 0 0 0 2px rgba(102,116,111,.12);
+  font-size: .78rem; color: var(--ink-soft); line-height: 1.4;
+}
+.palm.has { background: radial-gradient(circle at 50% 40%, #fff, rgba(240,192,90,.28)); box-shadow: inset 0 0 0 2px var(--amber-l); color: var(--ink); font-weight: 700; }
+.palm svg { width: 56px; height: 56px; margin: 0 auto 2px; }
+.palm.pop { animation: pop .45s ease; }
+.hand-actions { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; }
+.btn-sm { padding: .55em 1.1em; font-size: .82rem; }
+.thumb {
+  display: inline-flex; align-items: center; gap: .35em;
+  padding: .55em 1em; border-radius: 999px; border: 0;
+  background: rgba(142,214,204,.3); font-size: .78rem; font-weight: 700; cursor: pointer;
+  font-family: var(--f-ja-head); letter-spacing: .06em;
+}
+.thumb.warm { background: rgba(240,192,90,.3); }
+.thumb:disabled { opacity: .4; cursor: not-allowed; }
+.thumb kbd { font-family: var(--f-en-head); font-size: .7rem; background: var(--milk); border-radius: 6px; padding: 0 .4em; }
+
+.final {
+  display: grid; align-content: center; justify-items: center; gap: 1rem;
+  text-align: center;
+  position: relative;
+}
+.final-plus { font-family: var(--f-en-head); font-size: 2rem; color: var(--amber); line-height: 1; }
+.result {
+  position: relative;
+  width: 150px; height: 178px;
+  display: grid; place-items: center;
+  border-radius: 50% 50% 50% 50% / 58% 58% 42% 42%;
+  background: rgba(247,244,236,.75);
+  box-shadow: inset 0 0 0 2px rgba(212,163,89,.25);
+  color: var(--ink-soft); font-size: .8rem; line-height: 1.5;
+}
+.result.done { background: radial-gradient(circle at 50% 40%, #fff, rgba(240,192,90,.35)); box-shadow: inset 0 0 0 2px var(--amber); color: var(--ink); }
+.result svg { width: 84px; height: 84px; margin: 0 auto; }
+.result .name { font-family: var(--f-ja-head); font-weight: 900; font-size: 1rem; letter-spacing: .1em; }
+.splash { position: absolute; inset: -40%; pointer-events: none; }
+.splash i {
+  position: absolute; left: 50%; top: 50%;
+  width: 60px; height: 60px; margin: -30px;
+  border-radius: 50%;
+  filter: url(#wc-soft);
+  opacity: 0;
+}
+.result.done .splash i { animation: splash 1.1s ease-out forwards; }
+.success {
+  font-family: var(--f-en-head); font-style: italic; font-weight: 700;
+  color: var(--amber); font-size: 1.25rem; letter-spacing: .04em;
+  opacity: 0; transform: translateY(8px); transition: opacity .5s .3s, transform .5s .3s;
+  min-height: 1.6em; margin: 0;
+}
+.success.show { opacity: 1; transform: none; }
+
+.palette {
+  position: relative; z-index: 1;
+  margin-top: 1.8rem;
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+}
+.palette-label { width: 100%; text-align: center; margin: 0 0 .2rem; font-size: .8rem; color: var(--ink-soft); }
+.mat {
+  display: grid; justify-items: center; gap: 2px;
+  width: 84px; padding: .6rem .3rem .5rem;
+  border: 0; border-radius: 20px;
+  background: var(--paper);
+  font-size: .76rem; font-weight: 700;
+  cursor: pointer;
+  transition: transform .2s, background .2s;
+}
+.mat:hover { transform: translateY(-3px); background: rgba(142,214,204,.22); }
+.mat svg { width: 40px; height: 40px; }
+.demo-foot { position: relative; z-index: 1; margin-top: 1.4rem; display: grid; justify-items: center; gap: .6rem; }
+.demo-msg { margin: 0; min-height: 1.9em; font-size: .9rem; color: var(--sea); text-align: center; }
+.demo-tools { display: flex; gap: .6rem; flex-wrap: wrap; justify-content: center; }
+.hint {
+  display: none;
+  margin: .4rem auto 0; max-width: 560px;
+  background: var(--paper); border-radius: 18px; padding: .9rem 1.2rem;
+  font-size: .84rem; color: var(--ink-soft);
+}
+.hint.show { display: block; }
+.hint p { margin: .2rem 0; }
+
+@keyframes pop { 0% { transform: scale(.85); } 60% { transform: scale(1.08); } 100% { transform: scale(1); } }
+@keyframes splash { 0% { opacity: .8; transform: translate(0,0) scale(.3); } 100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(1.6); } }
+
+/* ===== ミルケ ===== */
+.milke {
+  position: relative;
+  padding: clamp(72px, 9vw, 140px) clamp(16px, 4vw, 48px);
+  overflow: hidden;
+  overflow: clip;
+}
+.milke-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(24px, 5vw, 80px);
+  align-items: center;
+}
+.milke-visual { position: relative; aspect-ratio: 4 / 5; }
+.milke-visual .milke-ph { left: 8%; top: 0; width: 76%; height: 100%; }
+.milke-visual .deco-a { width: 62%; aspect-ratio: 5/6; left: -4%; top: 10%; background: var(--peach); opacity: .55; }
+.milke-visual .deco-b { width: 34%; aspect-ratio: 5/6; right: 0; bottom: 6%; background: var(--lagoon); opacity: .45; }
+.quote-v {
+  position: absolute; right: 0; top: 4%;
+  writing-mode: vertical-rl;
+  font-family: var(--f-ja-head); font-weight: 700;
+  font-size: clamp(1.05rem, 1.8vw, 1.35rem); letter-spacing: .3em;
+  color: var(--sea);
+  background: rgba(255,253,249,.85);
+  padding: 1.1rem .7rem;
+  border-radius: 999px;
+  z-index: 3;
+}
+.milke-title { margin: 0 0 .6rem; }
+.milke-title .h-en { font-size: clamp(3.4rem, 7vw, 6rem); color: var(--rose); }
+.milke-title .h-ja { margin-top: .6rem; font-size: 1.3rem; letter-spacing: .4em; }
+.role { display: inline-block; margin: 0 0 1.2rem; padding: .15em 1em; border-radius: 999px; background: rgba(247,197,204,.5); font-family: var(--f-ja-head); font-weight: 700; font-size: .9rem; letter-spacing: .1em; }
+.milke-text > p.desc { margin: 0 0 1.6rem; }
+.profile { margin: 0 0 2.2rem; display: grid; gap: .1rem; }
+.profile div { display: grid; grid-template-columns: 4.5em 1fr; gap: 1rem; padding: .55rem 0; border-bottom: 1px dashed rgba(102,116,111,.3); font-size: .92rem; }
+.profile dt { font-family: var(--f-ja-head); font-weight: 700; color: var(--lagoon-d); letter-spacing: .1em; }
+.profile dd { margin: 0; }
+.wardrobe { background: var(--milk); border-radius: var(--radius); padding: 1.3rem 1.4rem; box-shadow: 0 14px 30px -20px rgba(232,141,157,.6); }
+.wardrobe h3 { margin: 0 0 .3rem; font-family: var(--f-ja-head); letter-spacing: .1em; font-size: 1.1rem; }
+.wardrobe p { margin: 0 0 1rem; font-size: .88rem; color: var(--ink-soft); }
+.looks { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.look {
+  aspect-ratio: 5/6;
+  display: grid; place-items: center; text-align: center;
+  font-family: var(--f-hand); font-size: .8rem; color: #b25d6d; line-height: 1.4;
+  background: linear-gradient(180deg, rgba(247,197,204,.35), rgba(142,214,204,.3));
+}
+.look:nth-child(2) { background: linear-gradient(180deg, rgba(240,192,90,.3), rgba(247,197,204,.35)); }
+.look:nth-child(3) { background: linear-gradient(180deg, rgba(142,214,204,.35), rgba(218,240,225,.6)); }
+
+.companions {
+  margin-top: clamp(56px, 8vw, 96px);
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px;
+}
+.comp {
+  display: grid; grid-template-columns: 96px 1fr; gap: 1.2rem; align-items: center;
+  background: rgba(255,253,249,.8); border-radius: var(--radius); padding: 1.2rem 1.4rem;
+}
+.comp-ic { width: 96px; height: 115px; display: grid; place-items: center; text-align: center; font-family: var(--f-hand); font-size: .74rem; color: var(--ink-soft); line-height: 1.3; }
+.comp:first-child .comp-ic { background: linear-gradient(180deg, #fff, rgba(142,214,204,.4)); }
+.comp:last-child .comp-ic { background: linear-gradient(180deg, #fff, rgba(240,192,90,.35)); }
+.comp h3 { margin: 0 0 .2rem; font-family: var(--f-ja-head); letter-spacing: .1em; font-size: 1.05rem; }
+.comp h3 small { font-family: var(--f-en-label); font-size: .64rem; letter-spacing: .22em; color: var(--lagoon-d); margin-left: .4em; }
+.comp p { margin: 0; font-size: .86rem; color: var(--ink-soft); line-height: 1.75; }
+
+/* ===== フッター ===== */
+.site-footer {
+  padding: 56px clamp(16px, 4vw, 48px) 120px;
+  background: var(--sea);
+  color: rgba(255,253,249,.92);
+  text-align: center;
+  position: relative;
+}
+.site-footer::before {
+  content: ""; position: absolute; left: 0; right: 0; top: -40px; height: 80px;
+  background: var(--sea); border-radius: 50% 50% 0 0 / 100% 100% 0 0; filter: url(#wc-soft);
+}
+.site-footer .brand-en { color: var(--milk); font-size: 2rem; position: relative; }
+.site-footer p { margin: .4rem 0; font-size: .85rem; position: relative; }
+.site-footer a { color: var(--lagoon); }
+.site-footer .mock-note { margin-top: 1.4rem; font-size: .76rem; opacity: .75; }
+
+/* ===== 見比べパネル ===== */
+.tweaks {
+  position: fixed; right: 16px; bottom: 16px; z-index: 60;
+  background: rgba(255,253,249,.95);
+  border-radius: 20px;
+  padding: .8rem 1rem;
+  box-shadow: 0 16px 40px -18px rgba(34,96,122,.6);
+  font-size: .76rem;
+  display: grid; gap: .45rem;
+}
+.tweaks-title { margin: 0; font-weight: 700; color: var(--rose); letter-spacing: .1em; }
+.tw-row { display: flex; align-items: center; gap: .4rem; }
+.tw-row > span { width: 4.2em; color: var(--ink-soft); }
+.tw-row button {
+  border: 0; border-radius: 999px; padding: .3em .9em; cursor: pointer;
+  background: var(--paper); font-size: .76rem; font-weight: 700;
+}
+.tw-row button[aria-pressed="true"] { background: var(--sea); color: var(--milk); }
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 880px) {
+  .site-nav { display: none; }
+  .cover-grid, .feature-head, .feature-body, .milke-grid, .companions { grid-template-columns: minmax(0, 1fr); }
+  .cover-visual { max-width: 520px; max-height: none; }
+  .feature-photo { position: relative; top: 0; max-width: 420px; width: 100%; margin: 0 auto; }
+  .milke-visual { max-width: 460px; width: 100%; margin: 0 auto; }
+  .hands { grid-template-columns: minmax(0, 1fr); }
+  .final { order: 3; }
+  .hand[data-hand="R"] { order: 2; }
+}
+@media (max-width: 560px) {
+  .steps { grid-template-columns: minmax(0, 1fr); }
+  .nail { width: 46px; height: 57px; }
+  .nail svg { width: 34px; height: 34px; }
+  .mat { width: 72px; }
+  .comp { grid-template-columns: 72px 1fr; }
+  .comp-ic { width: 72px; height: 86px; }
+  .tweaks { left: 16px; right: 16px; bottom: 12px; grid-template-columns: 1fr; }
+  .tweaks-title { display: none; }
+  .site-footer { padding-bottom: 160px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .nail.pop, .palm.pop, .result.done .splash i { animation: none; }
+}
+</style>
+</head>
+<body class="type-soft shape-egg">
+
+<!-- 水彩フィルター・共通の絵 -->
+<svg class="svg-defs" aria-hidden="true" focusable="false">
+  <defs>
+    <filter id="wc" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.022" numOctaves="4" seed="7" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="14" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feGaussianBlur in="d" stdDeviation="0.7" result="b"/>
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="2" result="g"/>
+      <feColorMatrix in="g" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -0.8 1.25" result="ga"/>
+      <feComposite in="b" in2="ga" operator="in" result="grain"/>
+      <feMorphology in="b" operator="erode" radius="2" result="er"/>
+      <feComposite in="b" in2="er" operator="out" result="edge"/>
+      <feColorMatrix in="edge" type="matrix" values="0.82 0 0 0 0  0 0.82 0 0 0  0 0 0.82 0 0  0 0 0 0.55 0" result="edgeD"/>
+      <feMerge><feMergeNode in="grain"/><feMergeNode in="edgeD"/></feMerge>
+    </filter>
+    <filter id="wc-soft" x="-30%" y="-30%" width="160%" height="160%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="3" seed="11" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="34" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feGaussianBlur in="d" stdDeviation="5"/>
+    </filter>
+    <filter id="wc-s" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.07" numOctaves="3" seed="5" result="t"/>
+      <feDisplacementMap in="SourceGraphic" in2="t" scale="2.6" xChannelSelector="R" yChannelSelector="G" result="d"/>
+      <feGaussianBlur in="d" stdDeviation="0.25" result="b"/>
+      <feMorphology in="b" operator="erode" radius="0.8" result="er"/>
+      <feComposite in="b" in2="er" operator="out" result="edge"/>
+      <feColorMatrix in="edge" type="matrix" values="0.75 0 0 0 0  0 0.75 0 0 0  0 0 0.75 0 0  0 0 0 0.6 0" result="edgeD"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="edgeD"/></feMerge>
+    </filter>
+
+    <linearGradient id="g-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9FD8E3"/>
+      <stop offset=".5" stop-color="#DDF2EF"/>
+      <stop offset="1" stop-color="#FFF4E2"/>
+    </linearGradient>
+    <linearGradient id="g-sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#86D3D1"/>
+      <stop offset="1" stop-color="#3FB0AB"/>
+    </linearGradient>
+    <radialGradient id="g-sun" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#FFF6D2"/>
+      <stop offset="1" stop-color="#FFF6D2" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- 仮の島の景色（西洋の白壁の村＋南国の海と植物） -->
+    <symbol id="scene-island" viewBox="0 0 600 720" preserveAspectRatio="xMidYMid slice">
+      <rect width="600" height="720" fill="url(#g-sky)"/>
+      <circle cx="430" cy="140" r="150" fill="url(#g-sun)"/>
+      <g filter="url(#wc-soft)" fill="#fff" opacity=".9">
+        <ellipse cx="130" cy="150" rx="96" ry="24"/><ellipse cx="180" cy="128" rx="58" ry="30"/>
+        <ellipse cx="420" cy="232" rx="110" ry="20"/><ellipse cx="470" cy="214" rx="52" ry="24"/>
+      </g>
+      <g filter="url(#wc)">
+        <path d="M290 338 C330 306 372 262 428 244 C482 228 545 240 600 258 L600 370 L290 370Z" fill="#B9D59A" opacity=".95"/>
+        <path d="M320 350 C366 322 420 304 474 304 C526 304 566 316 600 324 L600 380 L320 380Z" fill="#E6D8BA"/>
+      </g>
+      <g filter="url(#wc-s)">
+        <rect x="402" y="278" width="24" height="20" fill="#FFFDF9"/>
+        <rect x="430" y="264" width="28" height="26" fill="#FFFDF9"/>
+        <rect x="462" y="258" width="32" height="30" fill="#FFFDF9"/>
+        <path d="M466 258 a12 12 0 0 1 24 0Z" fill="#4A90B8"/>
+        <rect x="498" y="268" width="24" height="22" fill="#FFFDF9"/>
+        <rect x="526" y="252" width="30" height="34" fill="#FFFDF9"/>
+        <rect x="560" y="262" width="26" height="24" fill="#FFFDF9"/>
+        <path d="M526 252 l15 -12 l15 12Z" fill="#E59A7A"/>
+        <g fill="#7FC0D0"><rect x="437" y="272" width="6" height="8"/><rect x="470" y="268" width="6" height="9"/><rect x="482" y="268" width="6" height="9"/><rect x="534" y="262" width="6" height="9"/><rect x="566" y="270" width="6" height="8"/></g>
+      </g>
+      <g filter="url(#wc)">
+        <path d="M0 352 C120 342 240 358 360 350 C460 344 540 354 600 350 L600 520 L0 520Z" fill="url(#g-sea)" opacity=".92"/>
+        <path d="M0 404 C150 396 300 414 450 402 C520 398 570 404 600 402 L600 520 L0 520Z" fill="#2E9A9A" opacity=".3"/>
+      </g>
+      <g fill="#fff" opacity=".85">
+        <ellipse cx="380" cy="372" rx="14" ry="1.6"/><ellipse cx="420" cy="384" rx="9" ry="1.4"/><ellipse cx="350" cy="392" rx="11" ry="1.4"/>
+        <ellipse cx="460" cy="396" rx="16" ry="1.6"/><ellipse cx="300" cy="410" rx="8" ry="1.2"/><ellipse cx="510" cy="378" rx="10" ry="1.4"/>
+      </g>
+      <g filter="url(#wc)">
+        <path d="M0 470 C120 455 260 480 380 468 C470 460 540 470 600 466 L600 720 L0 720Z" fill="#F5E7C9"/>
+        <path d="M0 470 C120 455 260 480 380 468 C470 460 540 470 600 466" stroke="#fff" stroke-width="9" fill="none" opacity=".95"/>
+        <path d="M220 720 C270 604 380 562 600 540 L600 720Z" fill="#A9D07F" opacity=".95"/>
+        <path d="M330 720 C384 640 474 612 600 602 L600 720Z" fill="#7BA279" opacity=".75"/>
+      </g>
+      <g filter="url(#wc-s)">
+        <circle cx="300" cy="650" r="7" fill="#E88D9D"/><circle cx="312" cy="644" r="5" fill="#F7C5CC"/>
+        <circle cx="420" cy="610" r="6" fill="#fff"/><circle cx="470" cy="660" r="7" fill="#F0C05A"/>
+        <circle cx="540" cy="620" r="6" fill="#E88D9D"/><circle cx="380" cy="690" r="6" fill="#fff"/>
+      </g>
+      <g filter="url(#wc)">
+        <path d="M108 720 C110 600 122 470 166 330" stroke="#A9825A" stroke-width="15" fill="none" stroke-linecap="round"/>
+        <path d="M166 330 C124 300 74 300 30 332 C82 318 124 322 166 338Z" fill="#5E9E6A"/>
+        <path d="M166 330 C146 280 104 258 62 262 C112 280 134 300 162 336Z" fill="#74B07A"/>
+        <path d="M166 330 C196 280 246 268 288 282 C242 288 204 306 170 338Z" fill="#5E9E6A"/>
+        <path d="M166 330 C216 320 258 342 276 384 C238 354 204 344 168 340Z" fill="#4E8B5F"/>
+        <path d="M166 330 C156 362 126 392 94 402 C124 374 142 354 160 334Z" fill="#74B07A"/>
+        <path d="M44 720 C46 640 52 560 70 480" stroke="#B48E66" stroke-width="10" fill="none" stroke-linecap="round"/>
+        <path d="M70 480 C46 460 16 462 -6 480 C24 472 48 474 70 486Z" fill="#6FA874"/>
+        <path d="M70 480 C88 450 118 444 142 454 C114 458 92 470 72 486Z" fill="#5E9E6A"/>
+        <path d="M70 480 C96 482 116 500 122 524 C102 504 86 494 70 488Z" fill="#4E8B5F"/>
+      </g>
+    </symbol>
+
+    <!-- ミルケのシルエット記号（仮） -->
+    <symbol id="ph-cow" viewBox="0 0 64 44">
+      <path d="M14 18 C8 10 6 4 10 2 C12 8 16 12 20 14Z" fill="currentColor" opacity=".6"/>
+      <path d="M50 18 C56 10 58 4 54 2 C52 8 48 12 44 14Z" fill="currentColor" opacity=".6"/>
+      <ellipse cx="9" cy="22" rx="9" ry="5" transform="rotate(-18 9 22)" fill="currentColor" opacity=".45"/>
+      <ellipse cx="55" cy="22" rx="9" ry="5" transform="rotate(18 55 22)" fill="currentColor" opacity=".45"/>
+      <circle cx="32" cy="26" r="16" fill="currentColor" opacity=".35"/>
+    </symbol>
+  </defs>
+</svg>
+
+<header class="site-header">
+  <a class="brand" href="#cover"><span class="brand-en">Milkemist</span><span class="brand-mock">デザインモック</span></a>
+  <nav class="site-nav" aria-label="メインナビゲーション">
+    <ul>
+      <li><a href="#feature">練乳術<small>MILCHEMY</small></a></li>
+      <li><a href="#milke">ミルケ<small>MILKE</small></a></li>
+      <li><a href="#footer">作品情報<small>SPEC</small></a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <!-- ===== 表紙 ===== -->
+  <section class="cover" id="cover" aria-label="表紙">
+    <span class="wash" style="width:520px;height:420px;left:-160px;top:-120px;background:rgba(142,214,204,.35);" aria-hidden="true"></span>
+    <span class="wash" style="width:460px;height:380px;right:-120px;bottom:-140px;background:rgba(240,192,90,.22);" aria-hidden="true"></span>
+    <div class="cover-grid">
+      <div class="cover-visual">
+        <span class="deco shape deco-a" aria-hidden="true"></span>
+        <span class="deco shape deco-b" aria-hidden="true"></span>
+        <div class="cover-frame shape" role="img" aria-label="南の島の水彩風景（仮）">
+          <svg><use href="#scene-island"/></svg>
+        </div>
+        <span class="deco shape deco-c" aria-hidden="true"></span>
+        <div class="milke-ph" role="img" aria-label="ミルケの立ち絵が入る場所">
+          <svg aria-hidden="true"><use href="#ph-cow"/></svg>
+          <strong>Milke</strong>
+          <span class="ph-note">ミルケの立ち絵<br>（西洋風・表紙モデル）<br>枠から少しはみ出す配置</span>
+        </div>
+      </div>
+
+      <div class="cover-text reveal">
+        <p class="label">Island Guide <span>— Vol.01</span></p>
+        <h1 class="cover-title">
+          <span class="h-en">Milkemist</span>
+          <span class="h-ja">ミルケミスト</span>
+        </h1>
+        <p class="cover-catch">4ジャンルを<br>ひとつに<em>練乳</em>。</p>
+        <p class="cover-sub">遊び方が、結末になる。</p>
+        <ul class="facts">
+          <li>3D アクション × 練乳術 RPG</li>
+          <li>PC（Windows 10 / 11）</li>
+          <li>Unreal Engine 5 ／ 開発中</li>
+        </ul>
+        <div class="cta">
+          <a class="btn" href="#feature">練乳術を見る</a>
+          <a class="btn btn-ghost" href="#milke">ミルケに会う</a>
+        </div>
+      </div>
+    </div>
+    <p class="cover-pageno" aria-hidden="true">P.01</p>
+  </section>
+
+  <!-- ===== 巻頭特集：練乳術 ===== -->
+  <section class="feature" id="feature" aria-labelledby="feature-title">
+    <span class="wash" style="width:600px;height:460px;right:-220px;top:40px;background:rgba(240,192,90,.2);" aria-hidden="true"></span>
+    <span class="wash" style="width:520px;height:420px;left:-200px;bottom:120px;background:rgba(142,214,204,.22);" aria-hidden="true"></span>
+    <div class="wrap">
+      <div class="feature-head reveal">
+        <div>
+          <p class="label">Special Feature <span>— 巻頭特集</span></p>
+          <h2 class="feature-title" id="feature-title">
+            <span class="h-en">Milchemy</span>
+            <span class="h-ja">練乳術<small>島の名物は、両手でつくる。</small></span>
+          </h2>
+        </div>
+        <p class="feature-lead">ミストの「霧の手」の爪ひとつひとつが、素材を受け止めるスロット。片手で、もう片手で、そして両手で――。練り上げるほど、島の乳製品は増えていく。</p>
+      </div>
+
+      <div class="feature-body">
+        <figure class="feature-photo reveal" style="margin:0;">
+          <span class="deco shape deco-a" aria-hidden="true"></span>
+          <div class="photo-frame shape" role="img" aria-label="ゲーム画面が入る場所（仮の風景）">
+            <svg><use href="#scene-island"/></svg>
+          </div>
+          <figcaption class="photo-caption ph-note">ゲーム画面のスクショ（差し替え）</figcaption>
+        </figure>
+
+        <ol class="steps">
+          <li class="step reveal">
+            <div class="step-head"><span class="step-no">1</span><h3>片手で小さな合成</h3></div>
+            <p>同じ手の4本の爪で素材を揃えると、その手の中で中間素材を作成できます。</p>
+            <div class="formula">
+              <span class="ic" data-icon="water"></span><span class="ic" data-icon="water"></span><span class="ic" data-icon="butter"></span><span class="ic" data-icon="butter"></span>
+              <span class="op">→</span>
+              <span class="out"><span class="ic" data-icon="cream"></span><span>生クリーム</span></span>
+            </div>
+          </li>
+          <li class="step reveal">
+            <div class="step-head"><span class="step-no">2</span><h3>もう片手でも合成</h3></div>
+            <p>右手でも別の素材を揃えて、別の中間素材を作成できます。</p>
+            <div class="formula">
+              <span class="ic" data-icon="herb"></span><span class="ic" data-icon="milk"></span><span class="ic" data-icon="milk"></span><span class="ic" data-icon="berry"></span>
+              <span class="op">→</span>
+              <span class="out"><span class="ic" data-icon="starter"></span><span>発酵種</span></span>
+            </div>
+          </li>
+          <li class="step reveal">
+            <div class="step-head"><span class="step-no">3</span><h3>両手で最終合成</h3></div>
+            <p>左右の手で作った中間素材を組み合わせて、新しいアイテムを生成します。</p>
+            <div class="formula">
+              <span class="ic" data-icon="cream"></span><span class="op">+</span><span class="ic" data-icon="starter"></span>
+              <span class="op">→</span>
+              <span class="out"><span class="ic" data-icon="bluecheese"></span><span>ブルーチーズ</span></span>
+            </div>
+          </li>
+          <li class="step reveal">
+            <div class="step-head"><span class="step-no">4</span><h3>親指スキル <small>（各1回）</small></h3></div>
+            <p>親指のスキルを使うと、その手の4枠に特別な効果を発動できます。</p>
+            <div class="formula">
+              <span class="skill"><span class="ic" data-icon="frost"></span>左手<br>瞬間冷却</span>
+              <span class="op">／</span>
+              <span class="skill warm"><span class="ic" data-icon="age"></span>右手<br>熟成促進</span>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <!-- 体験デモ -->
+      <div class="demo reveal" id="demo" aria-labelledby="demo-title">
+        <span class="wash" style="width:380px;height:300px;left:-140px;top:-100px;background:rgba(142,214,204,.25);" aria-hidden="true"></span>
+        <span class="wash" style="width:380px;height:300px;right:-140px;bottom:-120px;background:rgba(247,197,204,.3);" aria-hidden="true"></span>
+        <div class="demo-head">
+          <p class="label">Try It <span>— 体験コーナー</span></p>
+          <h3 id="demo-title">ためしに、練乳してみる</h3>
+          <p>素材をえらぶと、えらんでいる手の爪に入ります。爪をタップすると外せます。</p>
+        </div>
+
+        <div class="hands">
+          <div class="hand is-active" data-hand="L">
+            <div class="hand-title">左手 <small>Left</small><span class="now">ここに入る</span></div>
+            <div class="nails"></div>
+            <div class="palm"></div>
+            <div class="hand-actions">
+              <button type="button" class="btn btn-sm synth">この手で合成</button>
+              <button type="button" class="thumb" data-skill="frost"><kbd>Q</kbd>瞬間冷却</button>
+            </div>
+          </div>
+
+          <div class="final">
+            <p class="label" style="margin:0;">Final</p>
+            <div class="result" aria-live="polite">
+              <div class="splash" aria-hidden="true"></div>
+              <span class="result-body">両手の中間素材を<br>あわせると…？</span>
+            </div>
+            <p class="success" aria-hidden="true">Milchemy Success!!</p>
+            <button type="button" class="btn final-btn" disabled>両手で最終合成</button>
+          </div>
+
+          <div class="hand" data-hand="R">
+            <div class="hand-title">右手 <small>Right</small><span class="now">ここに入る</span></div>
+            <div class="nails"></div>
+            <div class="palm"></div>
+            <div class="hand-actions">
+              <button type="button" class="btn btn-sm synth">この手で合成</button>
+              <button type="button" class="thumb warm" data-skill="age"><kbd>R</kbd>熟成促進</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="palette" role="group" aria-label="素材">
+          <p class="palette-label">島で集めた素材</p>
+        </div>
+
+        <div class="demo-foot">
+          <p class="demo-msg" aria-live="polite"></p>
+          <div class="demo-tools">
+            <button type="button" class="btn btn-ghost btn-sm" id="hintBtn" aria-expanded="false">レシピのヒント</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="resetBtn">はじめから</button>
+          </div>
+          <div class="hint" id="hint">
+            <p>生クリーム ＝ 水 ×2 ＋ バター ×2</p>
+            <p>発酵種 ＝ ハーブ ×1 ＋ 牛乳 ×2 ＋ ベリー ×1</p>
+            <p>ブルーチーズ ＝ 生クリーム ＋ 発酵種</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ミルケ ===== -->
+  <section class="milke" id="milke" aria-labelledby="milke-title">
+    <span class="wash" style="width:560px;height:460px;left:-200px;top:60px;background:rgba(247,197,204,.35);" aria-hidden="true"></span>
+    <span class="wash" style="width:480px;height:380px;right:-180px;bottom:40px;background:rgba(218,240,225,.7);" aria-hidden="true"></span>
+    <div class="wrap">
+      <div class="milke-grid">
+        <div class="milke-visual reveal">
+          <span class="deco shape deco-a" aria-hidden="true"></span>
+          <span class="deco shape deco-b" aria-hidden="true"></span>
+          <div class="milke-ph" role="img" aria-label="ミルケの立ち絵が入る場所">
+            <svg aria-hidden="true"><use href="#ph-cow"/></svg>
+            <strong>Milke</strong>
+            <span class="ph-note">ミルケの立ち絵<br>（全身・西洋風）</span>
+          </div>
+          <p class="quote-v">練乳すれば、なんでも作れる！</p>
+        </div>
+
+        <div class="milke-text reveal">
+          <p class="label">Resident 01 <span>— 島の人々</span></p>
+          <h2 class="milke-title" id="milke-title">
+            <span class="h-en">Milke</span>
+            <span class="h-ja">ミルケ</span>
+          </h2>
+          <p class="role">牛娘の見習い錬金術師</p>
+          <p class="desc">牛の角と耳をもつ、素直でけなげな天真爛漫の女の子。自身の母乳を用いた錬金「練乳」を得意とする。小さくて可愛いモンスターが大好きで、乳腺が退化した種族の母親代わりになりたいと願っている。</p>
+          <dl class="profile">
+            <div><dt>得意</dt><dd>練乳（母乳を使った錬金術）</dd></div>
+            <div><dt>好き</dt><dd>小さくて可愛いモンスター</dd></div>
+            <div><dt>ゆめ</dt><dd>赤ちゃんモンスターたちの母親代わり</dd></div>
+          </dl>
+          <div class="wardrobe">
+            <p class="label">Wardrobe <span>— 着せ替え</span></p>
+            <h3>島のおしゃれ</h3>
+            <p>髪型・衣装・アクセサリー・靴まで、気分で着せ替え。3Dビューアーで360度ながめられます。</p>
+            <div class="looks">
+              <div class="look shape">衣装 01<br>（差し替え）</div>
+              <div class="look shape">衣装 02<br>（差し替え）</div>
+              <div class="look shape">衣装 03<br>（差し替え）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="companions">
+        <div class="comp reveal">
+          <div class="comp-ic shape">ミスト<br>（霧の手）</div>
+          <div>
+            <h3>ミスト<small>Mist</small></h3>
+            <p>霧の凝縮体。あなたの分身。画面手前にあらわれる「霧の手」で練乳術をあやつる。</p>
+          </div>
+        </div>
+        <div class="comp reveal">
+          <div class="comp-ic shape">ニュ／ホニュ<br>しゃーにゃん</div>
+          <div>
+            <h3>赤ちゃんモンスター<small>Babies</small></h3>
+            <p>ドット風の赤ちゃんモンスターたち。よちよち歩いて、ミルケに甘えにやってくる。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer" id="footer">
+  <p class="brand-en">Milkemist</p>
+  <p>制作：こかげ ／ <a href="https://x.com/fujieda_kokage" target="_blank" rel="noopener noreferrer">X @fujieda_kokage</a></p>
+  <p>milkemist.com</p>
+  <p class="mock-note">※このページはデザイン確認用のモックです。絵・コピー・素材名の一部は仮です。</p>
+</footer>
+
+<aside class="tweaks" aria-label="見比べ切り替え">
+  <p class="tweaks-title">見比べ</p>
+  <div class="tw-row" role="group" aria-label="書体">
+    <span>書体</span>
+    <button type="button" data-type="soft" aria-pressed="true">やわらか</button>
+    <button type="button" data-type="classic" aria-pressed="false">クラシック</button>
+  </div>
+  <div class="tw-row" role="group" aria-label="切り抜き">
+    <span>切り抜き</span>
+    <button type="button" data-shape="egg" aria-pressed="true">卵型</button>
+    <button type="button" data-shape="diamond" aria-pressed="false">ひし形</button>
+  </div>
+</aside>
+
+<script>
+(function () {
+  /* ---- 水彩の縁をもつマスク（卵型／角丸ひし形） ---- */
+  function maskURL(viewBox, d) {
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + viewBox + '" preserveAspectRatio="none">' +
+      '<filter id="f" x="-10%" y="-10%" width="120%" height="120%">' +
+      '<feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="3" seed="4" result="t"/>' +
+      '<feDisplacementMap in="SourceGraphic" in2="t" scale="3.2" xChannelSelector="R" yChannelSelector="G" result="d"/>' +
+      '<feGaussianBlur in="d" stdDeviation="0.35"/></filter>' +
+      '<path filter="url(#f)" fill="#000" d="' + d + '"/></svg>';
+    return 'url("data:image/svg+xml,' + encodeURIComponent(svg) + '")';
+  }
+  var root = document.documentElement.style;
+  root.setProperty('--mask-egg', maskURL('0 0 100 120', 'M50 3C79 3 97 40 97 72C97 100 76 117 50 117C24 117 3 100 3 72C3 40 21 3 50 3Z'));
+  root.setProperty('--mask-diamond', maskURL('0 0 100 100', 'M43 6Q50 -1 57 6L94 43Q101 50 94 57L57 94Q50 101 43 94L6 57Q-1 50 6 43Z'));
+
+  /* ---- 素材アイコン（仮の水彩風） ---- */
+  var ICON = {
+    water: '<path d="M32 8C40 22 48 30 48 40a16 16 0 0 1-32 0C16 30 24 22 32 8Z" fill="#7EC8E3"/><ellipse cx="26" cy="40" rx="4" ry="7" fill="#fff" opacity=".75"/>',
+    butter: '<path d="M10 30 34 20 55 28 31 38Z" fill="#F8E4A6"/><path d="M10 30 31 38 31 50 10 42Z" fill="#F0C05A"/><path d="M31 38 55 28 55 40 31 50Z" fill="#DDAA45"/>',
+    milk: '<path d="M26 10h12v6c0 3 6 6 6 12v24a6 6 0 0 1-6 6H26a6 6 0 0 1-6-6V28c0-6 6-9 6-12Z" fill="#F2FAFA" stroke="#9FC3C6" stroke-width="2"/><path d="M21 32h22v20a6 6 0 0 1-6 6H27a6 6 0 0 1-6-6Z" fill="#FFFFFF"/><rect x="24" y="6" width="16" height="7" rx="2" fill="#8ED6CC"/>',
+    herb: '<path d="M32 58C32 42 30 30 22 16" stroke="#5E8F5F" stroke-width="3" fill="none" stroke-linecap="round"/><path d="M24 20C10 18 8 32 20 36 28 38 30 28 24 20Z" fill="#7BA279"/><path d="M31 36C41 24 55 28 51 40 47 48 35 46 31 36Z" fill="#94C08A"/>',
+    berry: '<circle cx="24" cy="38" r="11" fill="#E88D9D"/><circle cx="40" cy="38" r="11" fill="#F2A3B0"/><circle cx="32" cy="26" r="10" fill="#E07C8E"/><path d="M32 16C30 10 34 6 40 8 36 10 34 13 33 17Z" fill="#7BA279"/>',
+    cream: '<ellipse cx="32" cy="48" rx="21" ry="6" fill="#EFE5D2"/><path d="M12 46C12 38 20 36 23 31 22 23 30 19 33 11 37 19 44 22 42 30 48 32 53 38 51 46Z" fill="#fff" stroke="#E3D6BE" stroke-width="2"/><path d="M22 38C28 36 36 36 44 38" stroke="#E3D6BE" stroke-width="1.5" fill="none"/>',
+    starter: '<rect x="17" y="20" width="30" height="36" rx="9" fill="#FFF8EC" stroke="#C9B48E" stroke-width="2"/><path d="M19 38h26v8a8 8 0 0 1-8 8H27a8 8 0 0 1-8-8Z" fill="#EADBB8"/><rect x="19" y="11" width="26" height="10" rx="3" fill="#D4A359"/><circle cx="27" cy="44" r="2" fill="#fff"/><circle cx="36" cy="47" r="1.6" fill="#fff"/><circle cx="33" cy="41" r="1.3" fill="#fff"/>',
+    bluecheese: '<path d="M7 42 55 22 57 44 9 54Z" fill="#E6D39C"/><path d="M7 42 55 22 46 16 6 36Z" fill="#F6EBC8"/><path d="M6 36 7 42 55 22 46 16Z" fill="none"/><g fill="#5B8DB8" opacity=".75"><circle cx="22" cy="44" r="2.6"/><circle cx="34" cy="40" r="2"/><circle cx="44" cy="44" r="2.8"/><circle cx="30" cy="48" r="1.6"/><circle cx="48" cy="34" r="1.8"/><circle cx="26" cy="34" r="1.6"/></g>',
+    frost: '<g stroke="#5FB7D9" stroke-width="3" stroke-linecap="round"><path d="M32 10v44"/><path d="M13 21l38 22"/><path d="M13 43l38-22"/></g><circle cx="32" cy="32" r="6" fill="#BFE6F2"/>',
+    age: '<circle cx="32" cy="32" r="20" fill="#F8E4A6"/><path d="M32 18v14l10 6" stroke="#C98F35" stroke-width="3.5" fill="none" stroke-linecap="round"/><circle cx="32" cy="32" r="20" fill="none" stroke="#E8BD62" stroke-width="2"/>'
+  };
+  function icon(key) {
+    return '<svg viewBox="0 0 64 64" aria-hidden="true"><g filter="url(#wc-s)">' + ICON[key] + '</g></svg>';
+  }
+  document.querySelectorAll('[data-icon]').forEach(function (el) { el.innerHTML = icon(el.dataset.icon); });
+
+  /* ---- スクロールでふわっと ---- */
+  var reveals = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    reveals.forEach(function (el) { io.observe(el); });
+  } else {
+    reveals.forEach(function (el) { el.classList.add('is-in'); });
+  }
+
+  /* ---- 見比べ切り替え ---- */
+  document.querySelectorAll('.tweaks button').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var group = btn.parentElement.querySelectorAll('button');
+      group.forEach(function (b) { b.setAttribute('aria-pressed', String(b === btn)); });
+      if (btn.dataset.type) {
+        document.body.classList.toggle('type-classic', btn.dataset.type === 'classic');
+        document.body.classList.toggle('type-soft', btn.dataset.type === 'soft');
+      }
+      if (btn.dataset.shape) {
+        document.body.classList.toggle('shape-diamond', btn.dataset.shape === 'diamond');
+        document.body.classList.toggle('shape-egg', btn.dataset.shape === 'egg');
+      }
+    });
+  });
+
+  /* ---- 練乳術 体験デモ ---- */
+  var NAME = { water: '水', butter: 'バター', milk: '牛乳', herb: 'ハーブ', berry: 'ベリー', cream: '生クリーム', starter: '発酵種', bluecheese: 'ブルーチーズ' };
+  var MATERIALS = ['water', 'butter', 'milk', 'herb', 'berry'];
+  var HAND_RECIPES = [
+    { need: { water: 2, butter: 2 }, out: 'cream' },
+    { need: { herb: 1, milk: 2, berry: 1 }, out: 'starter' }
+  ];
+  var FINAL_RECIPES = [{ need: ['cream', 'starter'], out: 'bluecheese' }];
+  var SKILL_TEXT = { frost: '瞬間冷却！', age: '熟成促進！' };
+
+  var demo = document.getElementById('demo');
+  var handEls = { L: demo.querySelector('[data-hand="L"]'), R: demo.querySelector('[data-hand="R"]') };
+  var msgEl = demo.querySelector('.demo-msg');
+  var finalBtn = demo.querySelector('.final-btn');
+  var resultEl = demo.querySelector('.result');
+  var resultBody = demo.querySelector('.result-body');
+  var successEl = demo.querySelector('.success');
+  var splashEl = demo.querySelector('.splash');
+  var state;
+
+  function fresh() {
+    return { active: 'L', done: false, hands: {
+      L: { nails: [null, null, null, null], palm: null, skill: false },
+      R: { nails: [null, null, null, null], palm: null, skill: false }
+    } };
+  }
+  function say(t) { msgEl.textContent = t; }
+  function other(h) { return h === 'L' ? 'R' : 'L'; }
+  function matchHand(nails) {
+    if (nails.some(function (n) { return !n; })) return null;
+    var c = {};
+    nails.forEach(function (n) { c[n] = (c[n] || 0) + 1; });
+    return HAND_RECIPES.find(function (r) {
+      var keys = Object.keys(r.need);
+      return keys.length === Object.keys(c).length && keys.every(function (k) { return c[k] === r.need[k]; });
+    }) || null;
+  }
+  function matchFinal() {
+    var a = state.hands.L.palm, b = state.hands.R.palm;
+    if (!a || !b) return null;
+    return FINAL_RECIPES.find(function (r) {
+      return (r.need[0] === a && r.need[1] === b) || (r.need[0] === b && r.need[1] === a);
+    }) || null;
+  }
+  function setActive(h) {
+    state.active = h;
+    Object.keys(handEls).forEach(function (k) { handEls[k].classList.toggle('is-active', k === h); });
+  }
+
+  function render() {
+    ['L', 'R'].forEach(function (h) {
+      var hand = state.hands[h], el = handEls[h];
+      var nailsEl = el.querySelector('.nails');
+      nailsEl.innerHTML = '';
+      hand.nails.forEach(function (item, i) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'nail';
+        var no = h === 'L' ? i + 1 : i + 5;
+        b.setAttribute('aria-label', (h === 'L' ? '左手' : '右手') + 'の爪' + no + '：' + (item ? NAME[item] + '（タップで外す）' : '空き'));
+        b.innerHTML = '<span class="no">' + no + '</span>' + (item ? icon(item) : '');
+        b.addEventListener('click', function (ev) {
+          ev.stopPropagation();
+          setActive(h);
+          if (state.done || hand.palm || !item) return;
+          hand.nails[i] = null;
+          say(NAME[item] + 'を外しました。');
+          render();
+        });
+        nailsEl.appendChild(b);
+      });
+      var palm = el.querySelector('.palm');
+      palm.classList.toggle('has', !!hand.palm);
+      palm.innerHTML = hand.palm ? icon(hand.palm) + NAME[hand.palm] : '手のひら<br>（中間素材）';
+      var synth = el.querySelector('.synth');
+      synth.disabled = state.done || !!hand.palm || !matchHand(hand.nails);
+      var thumb = el.querySelector('.thumb');
+      thumb.disabled = state.done || hand.skill;
+    });
+    finalBtn.disabled = state.done || !matchFinal();
+  }
+
+  function addMaterial(key) {
+    if (state.done) { say('完成！「はじめから」でもう一度遊べます。'); return; }
+    var h = state.active, hand = state.hands[h];
+    if (hand.palm && !state.hands[other(h)].palm) { h = other(h); setActive(h); hand = state.hands[h]; }
+    if (hand.palm) { say('両手とも合成ずみ。まん中のボタンで最終合成！'); return; }
+    var idx = hand.nails.indexOf(null);
+    if (idx === -1) { say('この手の爪はいっぱい。爪をタップで外すか、もう片方の手をえらんでね。'); return; }
+    hand.nails[idx] = key;
+    render();
+    var nail = handEls[h].querySelectorAll('.nail')[idx];
+    nail.classList.add('pop');
+    if (hand.nails.indexOf(null) === -1) {
+      say(matchHand(hand.nails) ? 'レシピがそろった！「この手で合成」を押してみて。' : 'この組み合わせはレシピにないみたい。ヒントを見てみる？');
+    } else {
+      say((h === 'L' ? '左手' : '右手') + 'に' + NAME[key] + 'を入れました。');
+    }
+  }
+
+  function synthHand(h) {
+    var hand = state.hands[h], r = matchHand(hand.nails);
+    if (!r || hand.palm) return;
+    hand.palm = r.out;
+    hand.nails = [null, null, null, null];
+    render();
+    handEls[h].querySelector('.palm').classList.add('pop');
+    if (!state.hands[other(h)].palm) {
+      setActive(other(h));
+      say(NAME[r.out] + 'ができた！ つぎは' + (h === 'L' ? '右手' : '左手') + 'で、もうひとつ中間素材をつくろう。');
+    } else {
+      say(NAME[r.out] + 'ができた！ 両手がそろったので、最終合成へ。');
+    }
+  }
+
+  function finalSynth() {
+    var r = matchFinal();
+    if (!r) return;
+    state.done = true;
+    state.hands.L.palm = null;
+    state.hands.R.palm = null;
+    render();
+    resultBody.innerHTML = icon(r.out) + '<span class="name">' + NAME[r.out] + '</span>';
+    splashEl.innerHTML = '';
+    var colors = ['rgba(240,192,90,.55)', 'rgba(142,214,204,.55)', 'rgba(247,197,204,.6)', 'rgba(91,141,184,.35)'];
+    for (var i = 0; i < 8; i++) {
+      var s = document.createElement('i');
+      var ang = (Math.PI * 2 * i) / 8;
+      s.style.background = colors[i % colors.length];
+      s.style.setProperty('--x', Math.round(Math.cos(ang) * 90) + 'px');
+      s.style.setProperty('--y', Math.round(Math.sin(ang) * 90) + 'px');
+      s.style.animationDelay = (i * 0.03) + 's';
+      splashEl.appendChild(s);
+    }
+    resultEl.classList.add('done');
+    successEl.classList.add('show');
+    say(NAME[r.out] + 'が完成！ ゲームでは、もっとたくさんの乳製品が待っています。');
+  }
+
+  function useSkill(h, kind) {
+    var hand = state.hands[h];
+    if (state.done || hand.skill) return;
+    hand.skill = true;
+    handEls[h].classList.add(kind === 'frost' ? 'frost' : 'warm');
+    render();
+    say(SKILL_TEXT[kind] + '（ゲームでは、その手の4枠に特別な効果が発動します）');
+  }
+
+  function reset() {
+    state = fresh();
+    handEls.L.classList.remove('frost', 'warm');
+    handEls.R.classList.remove('frost', 'warm');
+    resultEl.classList.remove('done');
+    successEl.classList.remove('show');
+    splashEl.innerHTML = '';
+    resultBody.innerHTML = '両手の中間素材を<br>あわせると…？';
+    setActive('L');
+    render();
+    say('まずは左手から。下の素材をえらんでみよう。');
+  }
+
+  var palette = demo.querySelector('.palette');
+  MATERIALS.forEach(function (key) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'mat';
+    b.innerHTML = icon(key) + '<span>' + NAME[key] + '</span>';
+    b.addEventListener('click', function () { addMaterial(key); });
+    palette.appendChild(b);
+  });
+  ['L', 'R'].forEach(function (h) {
+    handEls[h].addEventListener('click', function () { if (!state.done) setActive(h); });
+    handEls[h].querySelector('.synth').addEventListener('click', function (ev) { ev.stopPropagation(); synthHand(h); });
+    var thumb = handEls[h].querySelector('.thumb');
+    thumb.addEventListener('click', function (ev) { ev.stopPropagation(); useSkill(h, thumb.dataset.skill); });
+  });
+  finalBtn.addEventListener('click', finalSynth);
+  document.getElementById('resetBtn').addEventListener('click', reset);
+  var hintBtn = document.getElementById('hintBtn');
+  hintBtn.addEventListener('click', function () {
+    var open = document.getElementById('hint').classList.toggle('show');
+    hintBtn.setAttribute('aria-expanded', String(open));
+  });
+
+  reset();
+})();
+</script>
+</body>
+</html>
